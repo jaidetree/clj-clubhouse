@@ -30,3 +30,10 @@
 (defn in-workflow?
   [id story]
   (= (:workflow_state_id story) id))
+
+(defn get-active-epics!
+  []
+  (->> (get! "epics" {})
+       (filter (every-pred #(= (:archived %) false)
+                           #(= (:completed %) false)
+                           #(= (:started %) true)))))
